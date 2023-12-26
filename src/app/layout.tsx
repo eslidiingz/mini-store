@@ -1,8 +1,14 @@
 import type { Metadata } from 'next'
-import { Inter } from 'next/font/google'
+import { Prompt } from 'next/font/google'
 import './globals.css'
+import { config } from '@fortawesome/fontawesome-svg-core'
+import '@fortawesome/fontawesome-svg-core/styles.css'
+config.autoAddCss = false
 
-const inter = Inter({ subsets: ['latin'] })
+import MainLayout from '@/components/Layout/MainLayout'
+
+
+const prompt = Prompt({ weight: '400', subsets: ['latin'] })
 
 export const metadata: Metadata = {
   title: 'Create Next App',
@@ -16,7 +22,11 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={inter.className}>{children}</body>
+      <body className={prompt.className}>
+        <MainLayout>
+          {children}
+        </MainLayout>
+      </body>
     </html>
   )
 }

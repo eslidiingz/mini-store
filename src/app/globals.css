@@ -6,6 +6,11 @@
   --foreground-rgb: 0, 0, 0;
   --background-start-rgb: 214, 219, 220;
   --background-end-rgb: 255, 255, 255;
+
+  --primary-color: #04b8f4;
+
+  --button-primary-color: #04b8f4;
+  --button-primary-active-color: #16afe3;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -17,11 +22,29 @@
 }
 
 body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+
+}
+
+.bg-primary {
+  background-color: var(--primary-color);
+}
+
+.btn {
+  @apply px-5 py-2 rounded
+}
+
+.btn-primary {
+  @apply text-white bg-[var(--button-primary-color)] active:bg-[var(--button-primary-active-color)]
+}
+
+.label {
+  @apply block text-sm font-medium leading-6 text-gray-900
+}
+
+.input {
+  @apply block w-full rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-[var(--primary-color)] sm:text-sm sm:leading-6 outline-none px-4 py-2.5
+}
+
+.helper-error {
+  @apply text-xs text-red-400 mt-1
 }
