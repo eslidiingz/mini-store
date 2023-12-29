@@ -1,10 +1,16 @@
+import { Stock } from "stocks"
+import { Sale } from "sales"
+
 model User {
-  id            String    @id @unique @default(uuid())
-  name          String
-  is_active     Boolean   @default(true)
-  created_at    DateTime  @default(now())
-  updated_at    DateTime  @updatedAt
-  deleted_at    DateTime?
+  id         String    @id @unique @default(uuid())
+  name       String
+  is_active  Boolean   @default(true)
+  created_at DateTime  @default(now())
+  updated_at DateTime  @updatedAt
+  deleted_at DateTime?
+
+  stocks Stock[]
+  sales  Sale[]
 
   @@map("users")
 }

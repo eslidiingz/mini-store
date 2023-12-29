@@ -1,0 +1,24 @@
+import { Category } from "./categories"
+import { Stock } from "stocks"
+import { SaleProduct } from "sale_products"
+
+model Product {
+  id          String    @id @unique @default(uuid())
+  barcode     String
+  name        String
+  price       Decimal   @default(0)
+  cost_price  Decimal   @default(0)
+  description String?
+  photo       String?
+  is_active   Boolean   @default(true)
+  created_at  DateTime  @default(now())
+  updated_at  DateTime  @updatedAt
+  deleted_at  DateTime?
+
+  category_id   String
+  category      Category?     @relation(fields: [category_id], references: [id])
+  stocks        Stock[]
+  sale_products SaleProduct[]
+
+  @@map("products")
+}

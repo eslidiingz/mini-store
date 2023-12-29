@@ -1,10 +1,22 @@
+import { Product } from "products"
+import { SaleProduct } from "sale_products"
+
 model Category {
-  id         String    @unique @id @default(uuid())
-  name       String
-  is_active  Boolean   @default(true)
-  created_at DateTime  @default(now())
-  updated_at DateTime  @updatedAt
-  deleted_at DateTime?
+  id            String        @id @unique @default(uuid())
+  name          String
+  slug          String
+  is_active     Boolean       @default(true)
+  type          CategoryType  @default(USER)
+  created_at    DateTime      @default(now())
+  updated_at    DateTime      @updatedAt
+  deleted_at    DateTime?
+  products      Product[]
+  sale_products SaleProduct[]
 
   @@map("categories")
+}
+
+enum CategoryType {
+  SYSTEM
+  USER
 }

@@ -1,0 +1,17 @@
+import { Product } from "products"
+import { User } from "users"
+
+model Stock {
+  id         String    @id @unique @default(uuid())
+  product_id String
+  amount     Int
+  user_id    String
+  created_at DateTime  @default(now())
+  updated_at DateTime  @updatedAt
+  deleted_at DateTime?
+
+  product Product? @relation(fields: [product_id], references: [id])
+  user    User?    @relation(fields: [user_id], references: [id])
+
+  @@map("stocks")
+}

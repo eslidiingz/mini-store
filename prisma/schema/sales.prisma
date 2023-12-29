@@ -1,0 +1,21 @@
+import { User } from "users"
+import { SaleProduct } from "sale_products"
+
+model Sale {
+  id             String    @id @unique @default(uuid())
+  total_item     Int
+  total_price    Decimal
+  total_discount Decimal?
+  total_vat      Decimal?
+  total_balance  Decimal
+  total_cost     Decimal
+  user_id        String
+  created_at     DateTime  @default(now())
+  updated_at     DateTime  @updatedAt
+  deleted_at     DateTime?
+
+  user          User?         @relation(fields: [user_id], references: [id])
+  sale_products SaleProduct[]
+
+  @@map("sales")
+}

@@ -1,6 +1,31 @@
+import { iProduct } from '@/models/products';
 import prisma from "@/libs/prisma"
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL as string
+
+export enum iCategoryType {
+  SYSTEM = 'SYSTEM',
+  USER = 'USER'
+}
+
+export interface iCategory {
+  id: string;
+  name: string;
+  slug: string;
+  type: iCategoryType;
+  is_active: boolean;
+  created_at: Date;
+  updated_at: Date;
+  deleted_at: Date | null
+
+  products: iProduct[]
+}
+
+export interface CategoryUpdateInput {
+  name: string
+  slug?: string
+  is_active?: boolean
+}
 
 export class Category {
   public id: string = "";
@@ -14,35 +39,39 @@ export class Category {
     if (name) this.name = name
   }
 
-  async save(id?: string) {
+  async save(_name?: string) {
+    const name = _name ?? this.name
+    
     const category = await prisma.category.create({
       data: {
-        name: this.name
+        name: name,
+        slug: name.toLowerCase().replace(/ /g, "-"),
       }
     })
 
     return category
   }
 
-  static async all() {
+  static async paginate(page: number = 1, limit: number = 10) {
     const categories = await prisma.category.findMany({
-      orderBy: {
-        created_at: 'asc'
+      skip: (page - 1) * limit,
+      take: limit,
+      include: {
+        products: true
       }
     })
     
     return {
       results: categories
     }
+  }
 
-    // return categories.map(category => new Category(
-    //   category.id,
-    //   // category.name,
-    //   // category.is_active,
-    //   // category.created_at,
-    //   // category.updated_at,
-    //   // category.deleted_at
-    // ))
+  static async all() {
+    return await prisma.category.findMany({
+      orderBy: {
+        created_at: 'asc'
+      }
+    })
   }
 
   static async find(id: string) {
@@ -55,12 +84,12 @@ export class Category {
     return category
   }
 
-  static async update(id: string, data: object) {
+  static async update(id: string, data: CategoryUpdateInput) {
     return await prisma.category.update({
       where: {
         id
       },
-      data
+      data: {...data, slug: data.name.toLowerCase().replace(/ /g, "-")},
     })
   }
 
@@ -84,7 +113,8 @@ export const getCategories = async () => {
 export const createCategory = async (name: string) => {
   return await prisma.category.create({
     data: {
-      name
+      name,
+      slug: name.toLowerCase().replace(/ /g, "-"),
     }
   })
 }

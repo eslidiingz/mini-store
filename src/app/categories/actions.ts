@@ -4,6 +4,14 @@ import { Category } from "@/models/category"
 
 export const getCategories = async () => {
   try {
+    return await Category.paginate()
+  } catch (error) {
+    console.log("%c%s", "background: #ff0000; color: #000000", "🚀 ~ file: actions.ts:6 ~ getCategories ~ error:", error)
+  }
+}
+
+export const allCategories = async () => {
+  try {
     return await Category.all()
   } catch (error) {
     console.log("%c%s", "background: #ff0000; color: #000000", "🚀 ~ file: actions.ts:6 ~ getCategories ~ error:", error)
@@ -18,7 +26,7 @@ export const storeCategory = async (name: string) => {
   }
 }
 
-export const updateCategory = async (id: string, data: object) => {
+export const updateCategory = async (id: string, data: any) => {
   try {
     return await Category.update(id, data)
   } catch (error) {

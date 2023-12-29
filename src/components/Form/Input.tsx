@@ -22,7 +22,17 @@ const Input = ({ className, inValid, size, ...props}: any) => {
   }
   
   return (
-    <input {...props} className={`${className ? className : '' } block rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-inset ${inValidClass} placeholder:text-gray-400 focus:ring-2 focus:ring-inset ${focusRingInvalidClass} ${paddingClass} sm:text-sm sm:leading-6 outline-none `} />
+    <input 
+      {...props} 
+      className={`${className ? className : '' } 
+      block rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-inset 
+      placeholder:text-gray-400 focus:ring-2 focus:ring-inset 
+      ${focusRingInvalidClass} 
+      ${paddingClass} 
+      ${inValidClass}
+      ${props.disabled ? 'bg-gray-100 cursor-not-allowed' : ''}
+      sm:text-sm sm:leading-6 outline-none `}
+    />
   )
 }
 

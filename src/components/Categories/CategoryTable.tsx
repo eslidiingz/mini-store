@@ -8,25 +8,17 @@ import { FormEvent, useState } from "react";
 import Swal from "sweetalert2";
 import Input from "../Form/Input";
 import Switch from "../Form/Switch";
-
-export interface Category {
-  id: string;
-  name: string;
-  is_active: boolean;
-  created_at: Date;
-  updated_at: Date;
-  deleted_at: Date | null
-}
+import { iCategory, iCategoryType } from "@/models/category";
 
 type CategoryProps = {
   categories: {
-    results: Category[]
+    results: iCategory[] | any
   }
 }
 
 const CategoryTable = ({ categories }: CategoryProps) => {
   const router = useRouter()
-  const [edit, setEdit] = useState<Category>({} as Category)
+  const [edit, setEdit] = useState<iCategory>({} as iCategory)
   const [errorName, setErrorName] = useState<string>('')
 
   const deleteCategory = async (id: string) => {
@@ -68,7 +60,7 @@ const CategoryTable = ({ categories }: CategoryProps) => {
       try {
         await updateCategory(edit.id, edit)
         router.refresh()
-        setEdit({} as Category)
+        setEdit({} as iCategory)
         setErrorName('')
       } catch (error) {
         console.log("%c%s", "background: #ff0000; color: #000000", "🚀 ~ file: CategoryTable.tsx:64 ~ updateCategory ~ error:", error)
@@ -101,7 +93,7 @@ const CategoryTable = ({ categories }: CategoryProps) => {
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-200 bg-white">
-              {categories?.results?.map((cate: Category) => (
+              {categories?.results?.map((cate: iCategory) => (
                 <tr key={cate.id}>
                   <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-500 sm:pl-6 lg:pl-8">
                     {edit.id === cate.id
@@ -126,7 +118,7 @@ const CategoryTable = ({ categories }: CategoryProps) => {
                         <span className="text-green-500 hover:text-green-800 cursor-pointer" onClick={() => handleUpdateCategory()}>
                           <FontAwesomeIcon icon={faCheck} />
                         </span>
-                        <span className="text-red-500 hover:text-red-800 cursor-pointer" onClick={() => { setEdit({} as Category), setErrorName('') }}>
+                        <span className="text-red-500 hover:text-red-800 cursor-pointer" onClick={() => { setEdit({} as iCategory), setErrorName('') }}>
                           <FontAwesomeIcon icon={faTimes} />
                         </span>
                       </>
@@ -135,9 +127,11 @@ const CategoryTable = ({ categories }: CategoryProps) => {
                         <span className="text-yellow-500 hover:text-yellow-800 cursor-pointer" onClick={() => setEdit(cate)}>
                           <FontAwesomeIcon icon={faPencilAlt} />
                         </span>
-                        <span className="text-red-500 hover:text-red-800 cursor-pointer" onClick={() => deleteCategory(cate.id)}>
-                          <FontAwesomeIcon icon={faTrashAlt} />
-                        </span>
+                        {cate.type !== iCategoryType.SYSTEM && (
+                          <span className="text-red-500 hover:text-red-800 cursor-pointer" onClick={() => deleteCategory(cate.id)}>
+                            <FontAwesomeIcon icon={faTrashAlt} />
+                          </span>
+                        )}
                       </>
                     )}
                   </td>

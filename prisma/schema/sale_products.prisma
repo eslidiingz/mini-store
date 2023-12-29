@@ -1,0 +1,27 @@
+import { Product } from "products"
+import { Sale } from "sales"
+import { Category } from "categories"
+
+model SaleProduct {
+  id            String    @id @unique @default(uuid())
+  product_name  String
+  price         Decimal
+  amount        Int
+  total         Decimal
+  discount      Decimal?
+  total_balance Decimal
+  cost          Decimal
+  sale_id       String
+  product_id    String
+  category_id   String
+  created_at    DateTime  @default(now())
+  updated_at    DateTime  @updatedAt
+  deleted_at    DateTime?
+
+  sale     Sale?     @relation(fields: [sale_id], references: [id])
+  product  Product?  @relation(fields: [product_id], references: [id])
+  category Category? @relation(fields: [category_id], references: [id])
+
+  @@index([sale_id, product_id, category_id])
+  @@map("sale_products")
+}
