@@ -12,7 +12,7 @@ import TotalBalance from './components/TotalBalance'
 import ProductCategories from './components/ProductCategories'
 import BarcodeSearchBox from './components/BarcodeSearchBox'
 import TopSale from './components/TopSale'
-import { PRODUCT_SELECTED_STATE } from './state.recoil'
+import { SALE_PRODUCT_SELECTED_STATE } from './state.recoil'
 import { useRecoilState } from 'recoil'
 
 export interface iProductSale extends iProduct {
@@ -24,7 +24,7 @@ const SalePage = () => {
   const [saleList, setSaleList] = useState<any>([])
   const [categories, setCategories] = useState<iCategory[]>([])
   const [topSaleList, setTopSaleList] = useState<any>([])
-  const [productSelected, setProductSelected] = useRecoilState<iProduct>(PRODUCT_SELECTED_STATE)
+  const [productSelected, setProductSelected] = useRecoilState<iProduct>(SALE_PRODUCT_SELECTED_STATE)
 
   const handleSearch = async () => {
     const product: any = await findProductByBarcode(search)

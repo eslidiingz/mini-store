@@ -85,20 +85,22 @@ export class Category {
   }
 
   static async update(id: string, data: CategoryUpdateInput) {
+    const dataUpdated = {
+      name: data.name,
+      slug: data.name.toLowerCase().replace(/ /g, "-"),
+      is_active: data.is_active
+    }
+    
     return await prisma.category.update({
       where: {
         id
       },
-      data: {...data, slug: data.name.toLowerCase().replace(/ /g, "-")},
+      data: dataUpdated,
     })
   }
 
   static async delete(id: string) {
-    return await prisma.category.delete({
-      where: {
-        id
-      }
-    })
+    return await prisma.category.delete({ where: { id } })
   }
 }
 

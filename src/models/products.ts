@@ -1,3 +1,4 @@
+import { iCategory } from '@/models/category';
 import prisma from "@/libs/prisma";
 import { Prisma, PrismaClient } from "@prisma/client";
 const bwipjs = require('bwip-js');
@@ -26,7 +27,9 @@ export interface iProduct {
   created_at?: Date
   updated_at?: Date
   deleted_at?: Date | null
+
   total_stock? : number
+  category?: iCategory
 }
 
 
@@ -57,7 +60,8 @@ export class Product {
       skip: (page - 1) * limit,
       take: limit,
       include: {
-        stocks: true
+        stocks: true,
+        category: true,
       },
     });
     
@@ -89,6 +93,14 @@ export class Product {
     return await prisma.product.findMany({
       take: limit
     })
+  }
+
+  async update(id: string, data: any) {
+    return await prisma.product.update({ where: { id }, data })
+  }
+
+  async delete(id: string) {
+    return await prisma.product.delete({ where: { id } })
   }
 
   randomBarcode() {

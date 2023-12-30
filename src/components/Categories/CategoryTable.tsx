@@ -58,7 +58,7 @@ const CategoryTable = ({ categories }: CategoryProps) => {
   const handleUpdateCategory = async () => {
     if (validateForm()) {
       try {
-        await updateCategory(edit.id, edit)
+        const updated = await updateCategory(edit.id, edit)
         router.refresh()
         setEdit({} as iCategory)
         setErrorName('')
@@ -110,7 +110,18 @@ const CategoryTable = ({ categories }: CategoryProps) => {
                           status={cate.is_active}
                           onChange={(newStatus: boolean) => setEdit({ ...edit, is_active: newStatus })} />
                       </>
-                      : <>{cate.is_active ? <span className="text-green-500">Active</span> : "Inactive"}</>}
+                      : <>
+                        {cate?.is_active ?
+                          <>
+                            <span className="inline-flex items-center rounded-md bg-green-50 px-2 py-1 text-xs font-medium text-green-700 ring-1 ring-inset ring-green-600/20">
+                              Active
+                            </span>
+                          </> : <>
+                            <span className="inline-flex items-center rounded-md bg-gray-50 px-2 py-1 text-xs font-medium text-gray-700 ring-1 ring-inset ring-gray-600/20">
+                              Inctive
+                            </span>
+                          </>}
+                      </>}
                   </td>
                   <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6 lg:pr-8 space-x-2">
                     {edit.id === cate.id ? (

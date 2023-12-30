@@ -48,7 +48,7 @@ export default function MainLayout({ children, }: { children: React.ReactNode })
     { name: 'Sales', href: '/sales', icon: ComputerDesktopIcon, current: pathname === '/sales'},
     { name: 'Stocks', href: '/stocks', icon: RectangleStackIcon, current: pathname === '/stocks'},
     { name: 'Categories', href: '/categories', icon: Square3Stack3DIcon, current: pathname === '/categories'},
-    { name: 'Products', href: '#', icon: FolderIcon, current: pathname === '/products'},
+    { name: 'Products', href: '/products', icon: FolderIcon, current: pathname === '/products'},
     // { name: 'Team', href: '#', icon: UsersIcon, current: false },
     // { name: 'Calendar', href: '#', icon: CalendarIcon, current: false },
     // { name: 'Documents', href: '#', icon: DocumentDuplicateIcon, current: false },

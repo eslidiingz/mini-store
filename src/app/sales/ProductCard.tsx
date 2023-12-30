@@ -4,7 +4,7 @@ import { iProduct } from '@/models/products'
 import React from 'react'
 import { useRecoilState } from 'recoil'
 import styled from 'styled-components'
-import { PRODUCT_SELECTED_STATE } from './state.recoil'
+import { SALE_PRODUCT_SELECTED_STATE } from './state.recoil'
 import Image from 'next/image'
 
 type ProductCardProps = {
@@ -12,7 +12,7 @@ type ProductCardProps = {
 }
 
 const ProductCard = ({ product }: ProductCardProps) => {
-  const [_, setProductSelected] = useRecoilState<iProduct>(PRODUCT_SELECTED_STATE)
+  const [_, setProductSelected] = useRecoilState<iProduct>(SALE_PRODUCT_SELECTED_STATE)
 
   return (
     <>

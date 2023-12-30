@@ -1,30 +1,20 @@
 'use client'
 
-import { Fragment, useState } from 'react'
+import { Fragment, useEffect, useState } from 'react'
 import { Listbox, Transition } from '@headlessui/react'
 import { CheckIcon, ChevronUpDownIcon } from '@heroicons/react/20/solid'
 import { classNames } from '@/misc'
 
-const people = [
-  { id: 1, name: 'Wade Cooper' },
-  { id: 2, name: 'Arlene Mccoy' },
-  { id: 3, name: 'Devon Webb' },
-  { id: 4, name: 'Tom Cook' },
-  { id: 5, name: 'Tanya Fox' },
-  { id: 6, name: 'Hellen Schmidt' },
-  { id: 7, name: 'Caroline Schultz' },
-  { id: 8, name: 'Mason Heaney' },
-  { id: 9, name: 'Claudie Smitham' },
-  { id: 10, name: 'Emil Schaefer' },
-]
-
-
 type SelectBoxProps = {
   options: any;
+  optionsSelected: any;
   label: string;
   isRequired?: boolean;
-  defaultText?: string;
+  // isInvalid: boolean;
+  errorMessage?: string;
   onChange: (value: any) => void;
+  isReset?: boolean;
+  onReset?: () => void;
 }
 
 type OptionSelected = {
@@ -32,13 +22,26 @@ type OptionSelected = {
   name: string;
 }
 
-export default function SelectBox({ options, defaultText = "", label = "", isRequired = false, onChange }: SelectBoxProps) {
-  const [selected, setSelected] = useState<OptionSelected>({} as OptionSelected)
-
+export default function SelectBox({ options, optionsSelected, label = "", isRequired = false, isInvalid = false, errorMessage = "", onChange, isReset = false, onReset }: SelectBoxProps) {
+  const [selected, setSelected] = useState<any>(optionsSelected)
+  
   const handleSelected = (item: any) => {
       setSelected(item)
       onChange && onChange(item)
   }
+
+  useEffect(() => {
+    if ( isReset ) {
+      setSelected(options[0])
+      onReset && onReset()
+    }
+  }, [isReset])
+
+  useEffect(() => {
+    if ( optionsSelected ) {
+      setSelected(optionsSelected)
+    }
+  }, [optionsSelected])
 
   return (
     <Listbox value={selected} onChange={handleSelected}>
@@ -47,12 +50,12 @@ export default function SelectBox({ options, defaultText = "", label = "", isReq
           <Listbox.Label className="label">
             {label}
             {isRequired && (
-              <span className="text-red-600">*</span>
+              <span className="text-red-600">*<span className="helper-error">{errorMessage}</span></span>
             )}
           </Listbox.Label>
           <div className="relative mt-2">
-            <Listbox.Button className="relative w-full cursor-default rounded-md bg-white text-left text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:outline-none focus:ring-2 focus:ring-[var(--primary-color)] sm:text-sm sm:leading-6 pl-4 pr-10 py-2.5">
-              <span className="block truncate">{selected?.name || defaultText}</span>
+            <Listbox.Button className="relative w-full cursor-pointer rounded-md bg-white text-left text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:outline-none focus:ring-2 focus:ring-[var(--primary-color)] sm:text-sm sm:leading-6 pl-4 pr-10 py-2.5">
+              <span className="block truncate">{selected?.name}</span>
               <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
                 <ChevronUpDownIcon className="h-5 w-5 text-gray-400" aria-hidden="true" />
               </span>
