@@ -22,7 +22,7 @@ type OptionSelected = {
   name: string;
 }
 
-export default function SelectBox({ options, optionsSelected, label = "", isRequired = false, isInvalid = false, errorMessage = "", onChange, isReset = false, onReset }: SelectBoxProps) {
+export default function SelectBox({ options, optionsSelected, label = "", isRequired = false, errorMessage = "", onChange, isReset = false, onReset }: SelectBoxProps) {
   const [selected, setSelected] = useState<any>(optionsSelected)
   
   const handleSelected = (item: any) => {

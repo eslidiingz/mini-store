@@ -97,8 +97,8 @@ const StockForm = () => {
 
       <div className="form-group">
         <SelectBox 
-          options={categories} 
-          defaultText='---- Select category ----' 
+          options={categories}
+          optionsSelected={categories.find((category: iCategory) => category.id === form?.category_id)}
           label="Category" 
           isRequired={true} 
           onChange={(category: iCategory) => handleCategoryChange(category)} 
