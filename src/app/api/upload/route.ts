@@ -72,7 +72,7 @@ async function saveFile(file: File): Promise<string | null> {
 
     // await writeFile(distinationPath, resizedBuffer);
     // await writeFile(distinationPath, buffer);
-    return relativePath.replace('public/', '');
+    return relativePath.replace('public', '');
   } catch (error) {
     console.error('Error saving file:', error);
     return null;

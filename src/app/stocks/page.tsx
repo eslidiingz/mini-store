@@ -3,9 +3,11 @@ import ProductStockTable from '@/components/Stocks/ProductStockTable';
 import React from 'react'
 import { allProductPaginate } from '../products/actions';
 import StockHistory from '@/components/Stocks/StockHistory';
+import Pagination from '@/components/Pagination';
 
 const ProductIndexPage = async ({ searchParams }: { searchParams : { [key: string]: string | string[] | undefined }}) => {
-  const productStocks = await allProductPaginate()
+  const page = (searchParams?.page != undefined) ? parseInt(searchParams?.page.toLocaleString()) : 1
+  const productStocks = await allProductPaginate(page)
 
   let productStockHistories;
 

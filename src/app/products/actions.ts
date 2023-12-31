@@ -5,7 +5,6 @@ import { writeFile } from 'fs/promises'
 import { join } from 'path'
 
 export const storeProduct = async (data: any) => {
-  console.log("%c%s", "background: #008cff; color: #000000", "🚀 ~ file: actions.ts:8 ~ storeProduct ~ data:", data)
   try {
     return new Product().create(data);
   } catch (error) {

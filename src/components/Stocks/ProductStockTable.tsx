@@ -3,6 +3,7 @@
 import { iProduct } from "@/models/products"
 import Image from "next/image"
 import { useRouter, useSearchParams } from "next/navigation"
+import Pagination from "../Pagination"
 
 type ProductStockTableProps = {
   productStocks: any
@@ -10,10 +11,29 @@ type ProductStockTableProps = {
 
 const ProductStockTable = (props: ProductStockTableProps) => {
   const router = useRouter()
-  const searchParams = useSearchParams()
+  const searchParams: any = useSearchParams()
+  const page = parseInt(searchParams.get('page')) || 1
+  const product_id = parseInt(searchParams.get('product_id')) || ""
+
+  const paginate = {
+    currentPage: props?.productStocks?.currentPage,
+    pages: props?.productStocks?.pages,
+    currentItems: props?.productStocks?.currentItems,
+    totalItems: props?.productStocks?.totalItems,
+  }
 
   const handleProductStockClick = (product: iProduct) => {
-    router.push(`?product_id=${product?.id}`)
+    router.push(`?page=${page}&product_id=${product.id}`)
+  }
+
+  const nextPage = () => {
+    if (page >= props.productStocks.pages) return
+    router.push(`?page=${page + 1}&product_id=${product_id}`)
+  }
+
+  const previousPage = () => {
+    if (page <= 1) return
+    router.push(`?page=${page - 1}&product_id=${product_id}`)
   }
 
   return (
@@ -37,6 +57,11 @@ const ProductStockTable = (props: ProductStockTableProps) => {
           </div>
         </div>
       ))}
+
+      <Pagination 
+        paginate={props?.productStocks}
+        onNext={nextPage} 
+        onPrevious={previousPage} />
     </>
   )
 }
