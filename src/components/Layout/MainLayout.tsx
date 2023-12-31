@@ -52,7 +52,7 @@ export default function MainLayout({ children, }: { children: React.ReactNode })
     // { name: 'Team', href: '#', icon: UsersIcon, current: false },
     // { name: 'Calendar', href: '#', icon: CalendarIcon, current: false },
     // { name: 'Documents', href: '#', icon: DocumentDuplicateIcon, current: false },
-    { name: 'Reports', href: '#', icon: ChartPieIcon, current: false },
+    // { name: 'Reports', href: '#', icon: ChartPieIcon, current: false },
   ]
   // const teams = [
   //   { id: 1, name: 'Heroicons', href: '#', initial: 'H', current: false },

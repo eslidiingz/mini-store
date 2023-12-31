@@ -26,3 +26,11 @@ export const dateTimeFormat = (_date: any) =>
   dayjs(_date).format("DD/MM/YYYY HH:mm:ss");
 export const dateTimeValue = (_date: any) =>
   dayjs(_date).format("YYYY-MM-DD HH:mm:ss");
+
+  export const generateRandomFileName = (extension: string|null = null) => {
+    const timestamp = Date.now();
+    const randomString = Math.random().toString(36).substring(2, 16);
+    const fileName = `${randomString}-${timestamp}`;
+
+    return extension ? `${fileName}${extension}` : fileName;
+  }

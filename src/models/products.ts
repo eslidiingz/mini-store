@@ -73,9 +73,15 @@ export class Product {
         total_stock: totalStockAmount,
       };
     });
+
+    const count = await prisma.product.count();
     
     return {
-      results: productsWithTotalStock
+      currentPage: page ?? 1,
+      pages: Math.ceil(count / limit),
+      currentItems: productsWithTotalStock.length,
+      totalItems: count,
+      results: productsWithTotalStock,
     }
   }
 

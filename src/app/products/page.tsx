@@ -2,8 +2,9 @@ import { allProductPaginate } from "./actions"
 import ProductForm from "./components/ProductForm"
 import ProductTable from "./components/ProductTable"
 
-export default async function ProductPage() {
-  const products = await allProductPaginate()
+export default async function ProductPage({ searchParams }: { searchParams : { [key: string]: string | string[] | undefined }}) {
+  const page = (searchParams?.page != undefined) ? parseInt(searchParams?.page.toLocaleString()) : 1
+  const products = await allProductPaginate(page)
 
   return (
     <div className="py-10 px-4 sm:px-6 lg:px-8">

@@ -1,6 +1,5 @@
 import AddStock from '@/components/Stocks/AddStock';
 import ProductStockTable from '@/components/Stocks/ProductStockTable';
-import StockForm from '@/components/Stocks/StockForm'
 import React from 'react'
 import { allProductPaginate } from '../products/actions';
 import StockHistory from '@/components/Stocks/StockHistory';

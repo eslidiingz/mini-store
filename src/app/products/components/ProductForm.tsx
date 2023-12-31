@@ -12,15 +12,13 @@ import { useRecoilState } from "recoil"
 import { PRODUCT_IS_RESET_STATE, PRODUCT_SELECTED_STATE } from "../state.recoil"
 import { iProduct } from "@/models/products"
 import Switch from "@/components/Form/Switch"
-import { faPlus } from "@fortawesome/free-solid-svg-icons"
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 
 type FormProduct = {
   barcode: string
   name: string
   price: number
   cost_price: number
-  photo?: string
+  photo?: any
   category_id: string
   is_active?: boolean
 }
@@ -46,6 +44,9 @@ const ProductForm = (props: ProductFormProps) => {
   const [errors, setErrors] = useState<FormProductError>({} as FormProductError)
   const router = useRouter()
   const [productSelected, setProductSelected] = useRecoilState(PRODUCT_SELECTED_STATE)
+  const [file, setFile] = useState<File|null>()
+  const [previewUrl, setPreviewUrl] = useState<string|null>(null);
+
 
   const handleInputChange = (e: ChangeEvent<HTMLFormElement>) => {
     setForm({ ...form, [e.target.name]: e.target.value })
@@ -53,6 +54,28 @@ const ProductForm = (props: ProductFormProps) => {
 
   const handleCategoryChange = (category: iCategory) => {
     setForm({ ...form, category_id: category.id })
+  }
+
+  const handlePhotoChange = (e: ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files) {
+      const file = e.target.files[0]
+      setFile(file)
+      // setForm({ ...form, photo: file })
+      // setForm({ ...form, photo: URL.createObjectURL(file) })
+      previewFile(file)
+    }
+  }
+
+  const previewFile = (file: File|null) => {
+    if ( file ) {
+      const reader = new FileReader()
+      reader.onloadend = () => {
+        setPreviewUrl(reader.result as string)
+      }
+      reader.readAsDataURL(file)
+    } else {
+      setPreviewUrl(null)
+    }
   }
 
   const validatedForm = (): boolean => {
@@ -71,17 +94,43 @@ const ProductForm = (props: ProductFormProps) => {
     e.preventDefault()
 
     if (validatedForm()) {
+      let filePath = ( file ) ? await uploadFile() : null
+
       try {
         let product: any
+        let _form = ( file ) ? { ...form, photo: filePath } : form
+
         if (productSelected?.id) {
-          product = await updateProduct(productSelected?.id, form)
+          product = await updateProduct(productSelected?.id, _form)
         } else {
-          product = await storeProduct(form)
+          product = await storeProduct(_form)
         }
 
         if (product) resetForm()
       } catch (error) {
         console.log("%c%s", "background: #ff0000; color: #000000", "🚀 ~ file: ProductForm.tsx:49 ~ handleFormSubmit ~ error:", error)
+      }
+    }
+  }
+
+  const uploadFile = async () => {
+    if ( file ) {
+      try {
+        const data = new FormData()
+        data.set('file', file)
+  
+        const res = await fetch('/api/upload', {
+          method: 'POST',
+          body: data
+        })
+        // handle the error
+        if (!res.ok) throw new Error(await res.text())
+
+        const resJson = await res.json()
+        return resJson?.path 
+      } catch (e: any) {
+        // Handle errors here
+        console.error(e)
       }
     }
   }
@@ -96,6 +145,8 @@ const ProductForm = (props: ProductFormProps) => {
     } as FormProduct)
     setProductSelected({} as iProduct)
     setIsReset(true)
+    setFile(null)
+    setPreviewUrl(null)
     router.refresh()
   }
 
@@ -218,18 +269,29 @@ const ProductForm = (props: ProductFormProps) => {
             </label>
             <div className="mt-2 flex justify-center rounded-lg border border-dashed border-gray-900/25 p-6">
               <div className="text-center">
+                {previewUrl || productSelected?.photo ? (
+                  <img src={previewUrl || productSelected?.photo} className="w-full" alt="product-image" />
+                ) : (
                 <PhotoIcon className="mx-auto h-12 w-12 text-gray-300" aria-hidden="true" />
-                <div className="mt-4 flex text-sm leading-6 text-gray-600">
+                )}
+                <div className="mt-4 flex text-sm leading-6 text-gray-600 justify-center">
                   <label
                     htmlFor="file-upload"
                     className="relative cursor-pointer rounded-md bg-white font-semibold  focus-within:outline-none focus-within:ring-2 focus-within:ring-[var(--primary-color)] focus-within:ring-offset-2 hover:text-[var(--primary-color)]"
                   >
                     <span>Upload a file</span>
-                    <input id="file-upload" name="file-upload" type="file" className="sr-only" />
+                    <input 
+                      id="file-upload" 
+                      name="file-upload" 
+                      type="file" 
+                      className="sr-only" 
+                      accept="image/jpeg, image/png"
+                      onChange={(e: ChangeEvent<HTMLInputElement>) => handlePhotoChange(e)}
+                    />
                   </label>
-                  <p className="pl-1">or drag and drop</p>
+                  {/* <p className="pl-1">or drag and drop</p> */}
                 </div>
-                <p className="text-xs leading-5 text-gray-600">PNG, JPG, GIF up to 10MB</p>
+                <p className="text-xs leading-5 text-gray-600">Support file: PNG, JPG</p>
               </div>
             </div>
           </div>
