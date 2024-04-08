@@ -1,6 +1,7 @@
 import { iCategory } from '@/models/category';
 import prisma from "@/libs/prisma";
 import { Prisma, PrismaClient } from "@prisma/client";
+import { PAGE_DEFAULT, PAGE_LIMIT_DEFAULT } from '@/constants';
 const bwipjs = require('bwip-js');
 // import bwipjs from "bwip-js";
 
@@ -28,7 +29,7 @@ export interface iProduct {
   updated_at?: Date
   deleted_at?: Date | null
 
-  total_stock? : number
+  total_stock?: number
   category?: iCategory
 }
 
@@ -55,16 +56,20 @@ export class Product {
     return products
   }
 
-  async paginate(page: number = 1, limit: number = 10) {
+  async paginate(page: number = PAGE_DEFAULT, limit: number = PAGE_LIMIT_DEFAULT) {
     const productsWithStockSum = await prisma.product.findMany({
       skip: (page - 1) * limit,
       take: limit,
       include: {
-        stocks: true,
+        stocks: {
+          orderBy: {
+            created_at: 'desc'
+          }
+        },
         category: true,
       },
     });
-    
+
     // Calculate the total stock amount for each product
     const productsWithTotalStock = productsWithStockSum.map(product => {
       const totalStockAmount = product.stocks.reduce((sum, stock) => sum + stock.amount, 0);
@@ -75,7 +80,7 @@ export class Product {
     });
 
     const count = await prisma.product.count();
-    
+
     return {
       currentPage: page ?? 1,
       pages: Math.ceil(count / limit),
@@ -95,7 +100,7 @@ export class Product {
     return await prisma.product.findFirst({ where: { barcode } })
   }
 
-  async topSale(limit: number = 10) {
+  async topSale(limit: number = PAGE_LIMIT_DEFAULT) {
     return await prisma.product.findMany({
       take: limit
     })

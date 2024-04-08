@@ -49,7 +49,6 @@ export const allProduct = async () => {
 }
 
 export const allProductPaginate = async (page: number) => {
-  console.log("%c%s", "background: #008cff; color: #000000", "🚀 ~ file: actions.ts:53 ~ allProductPaginate ~ page:", page)
   try {
     return new Product().paginate(page)
   } catch (error) {

@@ -5,6 +5,11 @@ export function classNames(...classes: string[]) {
 }
 
 export const numberFormat = (num: number, digit: number = 2) => {
+
+  if (typeof num !== "number") {
+    num = parseFloat(num)
+  }
+
   if (typeof num === "number") {
     const nStr = num.toFixed(digit);
     const x = nStr.split(".");
@@ -27,10 +32,10 @@ export const dateTimeFormat = (_date: any) =>
 export const dateTimeValue = (_date: any) =>
   dayjs(_date).format("YYYY-MM-DD HH:mm:ss");
 
-  export const generateRandomFileName = (extension: string|null = null) => {
-    const timestamp = Date.now();
-    const randomString = Math.random().toString(36).substring(2, 16);
-    const fileName = `${randomString}-${timestamp}`;
+export const generateRandomFileName = (extension: string | null = null) => {
+  const timestamp = Date.now();
+  const randomString = Math.random().toString(36).substring(2, 16);
+  const fileName = `${randomString}-${timestamp}`;
 
-    return extension ? `${fileName}${extension}` : fileName;
-  }
+  return extension ? `${fileName}${extension}` : fileName;
+}

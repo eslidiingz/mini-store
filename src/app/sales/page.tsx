@@ -34,24 +34,24 @@ const SalePage = () => {
   const addProductToSaleList = (product: iProduct) => {
     let productToSaleList = saleList
 
-      if (productToSaleList.length > 0) {
-        productToSaleList = productToSaleList.map((item: any) => {
-          if (item.id === product.id) {
-            return { ...item, amount: item.amount + 1 }
-          } else {
-            return item
-          }
-        })
-
-        const productExist = productToSaleList.find((item: any) => item.id === product.id)
-        if (productExist == undefined) {
-          productToSaleList.push({ ...product, amount: 1 })
+    if (productToSaleList.length > 0) {
+      productToSaleList = productToSaleList.map((item: any) => {
+        if (item.id === product.id) {
+          return { ...item, amount: item.amount + 1 }
+        } else {
+          return item
         }
-      } else {
+      })
+
+      const productExist = productToSaleList.find((item: any) => item.id === product.id)
+      if (productExist == undefined) {
         productToSaleList.push({ ...product, amount: 1 })
       }
-      setSaleList([...productToSaleList]);
-      setTimeout(() => setSearch(""), 500)
+    } else {
+      productToSaleList.push({ ...product, amount: 1 })
+    }
+    setSaleList([...productToSaleList]);
+    setTimeout(() => setSearch(""), 500)
   }
 
   const handleAmountChange = (e: any, index: number) => {
@@ -99,6 +99,7 @@ const SalePage = () => {
       }).then(async (result) => {
         if (result.isConfirmed) {
           const stored = await storeSaleTransaction(saleList)
+          console.log("%c%s", "background: #04b8f4; color: #000000", "🚀 ~ file: page.tsx:102 ~ handleSaveSale ~ stored:", stored)
 
           if (stored) {
             Swal.fire({
@@ -138,7 +139,7 @@ const SalePage = () => {
   }, [search])
 
   useEffect(() => {
-    if (Object.keys(productSelected).length > 0 ) {
+    if (Object.keys(productSelected).length > 0) {
       addProductToSaleList(productSelected)
       setProductSelected({})
     }
@@ -163,13 +164,13 @@ const SalePage = () => {
         {/* Right screen */}
         <SummaryScreen className='col-span-1 p-4 flex flex-col'>
           <TotalBalance saleList={saleList} />
-            
-          <Bill 
-            saleList={saleList} 
+
+          <Bill
+            saleList={saleList}
             onAmountChange={(e: ChangeEvent<HTMLInputElement>, index: number) => handleAmountChange(e, index)}
             onUpdateSaleList={(product_id: string) => setSaleList([...saleList.filter((item: any) => item.id !== product_id)])}
           />
-          
+
 
           <div className="mt-auto space-y-2">
             {saleList.length > 0 && (

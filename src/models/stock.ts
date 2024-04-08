@@ -1,5 +1,3 @@
-
-import { Prisma } from '@prisma/client';
 import prisma from "@/libs/prisma";
 
 export interface iAddStockForm {
@@ -39,11 +37,25 @@ export class Stock {
 
   async create(data: StockCreateInput) {
     const user = await prisma.user.findFirst()
-    
-    if ( user != null ) {
+
+    if (user != null) {
       try {
         await prisma.stock.create({
-          data: {...data, user_id: user?.id}
+          data: { ...data, user_id: user?.id }
+        })
+      } catch (error) {
+        console.log("%c%s", "background: #ff0000; color: #000000", "🚀 ~ file: stock.ts:44 ~ Stock ~ create ~ error:", error)
+      }
+    }
+  }
+
+  async createMany(data: StockCreateInput[]) {
+    const user = await prisma.user.findFirst()
+
+    if ( user != null ) {
+      try {
+        await prisma.stock.createMany({
+          data: data.map((stock) => ({ ...stock, user_id: user?.id }))
         })
       } catch (error) {
         console.log("%c%s", "background: #ff0000; color: #000000", "🚀 ~ file: stock.ts:44 ~ Stock ~ create ~ error:", error)

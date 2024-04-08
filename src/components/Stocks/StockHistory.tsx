@@ -20,7 +20,7 @@ const StockHistory = ({ histories }: StockHistoryProps) => {
             className="flex justify-between p-4"
           >
             <div className="text-gray-400 text-sm"><FontAwesomeIcon icon={faCalendarAlt} /> { dayjs(history.created_at).format("YYYY-MM-DD HH:mm:ss") }</div>
-            <div>{ history.amount > 0 ? <span className="text-green-500">{`+${history.amount}`}</span> : history.amount }</div>
+            <div>{ history.amount > 0 ? <span className="text-green-500">{`+${history.amount}`}</span> : <span className="text-red-500">{history.amount}</span> }</div>
           </div>
         </div>
       ))}

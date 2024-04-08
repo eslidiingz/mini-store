@@ -20,6 +20,7 @@ import {
   BellIcon,
   CalendarIcon,
   ChartPieIcon,
+  ClipboardDocumentListIcon,
   Cog6ToothIcon,
   ComputerDesktopIcon,
   DocumentDuplicateIcon,
@@ -45,10 +46,11 @@ export default function MainLayout({ children, }: { children: React.ReactNode })
 
   const navigation = [
     // { name: 'Dashboard', href: '#', icon: HomeIcon, current: true },
-    { name: 'Sales', href: '/sales', icon: ComputerDesktopIcon, current: pathname === '/sales'},
-    { name: 'Stocks', href: '/stocks', icon: RectangleStackIcon, current: pathname === '/stocks'},
-    { name: 'Categories', href: '/categories', icon: Square3Stack3DIcon, current: pathname === '/categories'},
-    { name: 'Products', href: '/products', icon: FolderIcon, current: pathname === '/products'},
+    { name: 'Sale', href: '/sales', icon: ComputerDesktopIcon, current: pathname === '/sales' },
+    { name: 'Report', href: '/reports', icon: ClipboardDocumentListIcon, current: pathname === '/reports' },
+    { name: 'Stock', href: '/stocks', icon: RectangleStackIcon, current: pathname === '/stocks' },
+    { name: 'Category', href: '/categories', icon: Square3Stack3DIcon, current: pathname === '/categories' },
+    { name: 'Product', href: '/products', icon: FolderIcon, current: pathname === '/products' },
     // { name: 'Team', href: '#', icon: UsersIcon, current: false },
     // { name: 'Calendar', href: '#', icon: CalendarIcon, current: false },
     // { name: 'Documents', href: '#', icon: DocumentDuplicateIcon, current: false },
@@ -248,7 +250,7 @@ export default function MainLayout({ children, }: { children: React.ReactNode })
                       ))}
                     </ul>
                   </li> */}
-                  
+
                   {/* <li className="mt-auto">
                     <a
                       href="#"
@@ -345,7 +347,7 @@ export default function MainLayout({ children, }: { children: React.ReactNode })
             </div> */}
             </div>
 
-            <main>
+            <main className='bg-[#f7f7f9]'>
               <div className="">{children}</div>
               {/* <div className="px-4 sm:px-6 lg:px-8">{children}</div> */}
             </main>

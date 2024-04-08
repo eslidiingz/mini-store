@@ -1,5 +1,6 @@
 import { iProduct } from '@/models/products';
 import prisma from "@/libs/prisma"
+import { PAGE_DEFAULT, PAGE_LIMIT_DEFAULT } from '@/constants';
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL as string
 
@@ -41,7 +42,7 @@ export class Category {
 
   async save(_name?: string) {
     const name = _name ?? this.name
-    
+
     const category = await prisma.category.create({
       data: {
         name: name,
@@ -52,7 +53,7 @@ export class Category {
     return category
   }
 
-  static async paginate(page: number = 1, limit: number = 10) {
+  static async paginate(page: number = PAGE_DEFAULT, limit: number = PAGE_LIMIT_DEFAULT) {
     const categories = await prisma.category.findMany({
       skip: (page - 1) * limit,
       take: limit,
@@ -60,7 +61,7 @@ export class Category {
         products: true
       }
     })
-    
+
     return {
       results: categories
     }
@@ -90,7 +91,7 @@ export class Category {
       slug: data.name.toLowerCase().replace(/ /g, "-"),
       is_active: data.is_active
     }
-    
+
     return await prisma.category.update({
       where: {
         id

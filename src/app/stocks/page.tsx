@@ -30,7 +30,6 @@ const ProductIndexPage = async ({ searchParams }: { searchParams : { [key: strin
 
         <div className="w-1/2">
           <StockHistory histories={productStockHistories} />
-          {/* <StockForm /> */}
         </div>
       </div>
     </div>
