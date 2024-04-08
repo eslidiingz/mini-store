@@ -28,8 +28,6 @@ export class SaleProduct {
     constructor() { }
 
     async paginate(page: number = PAGE_DEFAULT, limit: number = PAGE_LIMIT_DEFAULT, filters: any) {
-        console.log("%c%s", "background: #04b8f4; color: #000000", "🚀 ~ file: sale_product.ts:30 ~ SaleProduct ~ paginate ~ filters:", filters)
-
 
         const groupBySaleIds = await prisma.saleProduct.groupBy({
             by: ['sale_id'],

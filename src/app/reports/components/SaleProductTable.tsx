@@ -13,8 +13,6 @@ type SaleProductTableProps = {
     // }
 }
 const SaleProductTable = ({ sale_products }: SaleProductTableProps) => {
-    // console.log("%c%s", "background: #04b8f4; color: #000000", "🚀 ~ file: SaleProductTable.tsx:13 ~ SaleProductTable ~ sale_products:", sale_products)
-
     return (
         <section>
             <table className="min-w-full divide-y divide-gray-300">
